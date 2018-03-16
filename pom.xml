@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <name>mvnrepository</name>
-    <description>Tools for accessing mvnrepository.com</description>
+    <description>Client for mvnrepository.com</description>
     <inceptionYear>2018</inceptionYear>
 
     <properties>
