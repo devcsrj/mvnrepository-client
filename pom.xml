@@ -30,6 +30,10 @@
     <description>Client for mvnrepository.com</description>
     <inceptionYear>2018</inceptionYear>
 
+    <modules>
+        <module>api-client</module>
+    </modules>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
