@@ -29,7 +29,7 @@ internal class ScrapingMvnRepositoryApi(
     private val okHttpClient: OkHttpClient) : MvnRepositoryApi {
 
     private val logger: Logger = LoggerFactory.getLogger(MvnRepositoryApi::class.java)
-    private val http: MvnRepositoryHttpApi
+    private val pageApi: MvnRepositoryPageApi
 
     init {
         val retrofit = Retrofit.Builder()
@@ -38,11 +38,11 @@ internal class ScrapingMvnRepositoryApi(
             .addConverterFactory(JspoonConverterFactory.create())
             .validateEagerly(true)
             .build()
-        http = retrofit.create(MvnRepositoryHttpApi::class.java)
+        pageApi = retrofit.create(MvnRepositoryPageApi::class.java)
     }
 
     override fun getArtifact(groupId: String, artifactId: String, version: String): Optional<Artifact> {
-        val response = http.getArtifact(groupId, artifactId, version).execute()
+        val response = pageApi.getArtifactPage(groupId, artifactId, version).execute()
         if (!response.isSuccessful) {
             logger.warn("Request to $baseUrl failed, got: ${response.code()}")
             return Optional.empty()

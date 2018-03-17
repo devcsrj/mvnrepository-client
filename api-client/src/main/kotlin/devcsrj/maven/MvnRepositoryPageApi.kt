@@ -19,11 +19,11 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-internal interface MvnRepositoryHttpApi {
+internal interface MvnRepositoryPageApi {
 
     @GET("/artifact/{groupId}/{artifactId}/{version}")
-    fun getArtifact(@Path("groupId") groupId: String,
-                    @Path("artifactId") artifactId: String,
-                    @Path("version") version: String): Call<ArtifactPage>
+    fun getArtifactPage(@Path("groupId") groupId: String,
+                        @Path("artifactId") artifactId: String,
+                        @Path("version") version: String): Call<ArtifactPage>
 
 }
