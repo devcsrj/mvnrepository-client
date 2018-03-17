@@ -19,7 +19,7 @@ import pl.droidsonroids.jspoon.annotation.Selector
 import java.net.URI
 import java.util.Date
 
-internal class ArtifactSelector {
+internal class ArtifactPage {
 
     @Selector("#maincontent > table > tbody > tr:nth-child(1) > td > span")
     lateinit var license: String

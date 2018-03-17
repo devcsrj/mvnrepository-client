@@ -24,6 +24,6 @@ internal interface MvnRepositoryHttpApi {
     @GET("/artifact/{groupId}/{artifactId}/{version}")
     fun getArtifact(@Path("groupId") groupId: String,
                     @Path("artifactId") artifactId: String,
-                    @Path("version") version: String): Call<ArtifactSelector>
+                    @Path("version") version: String): Call<ArtifactPage>
 
 }
