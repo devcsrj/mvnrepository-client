@@ -13,31 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package devcsrj.maven
+package devcsrj.mvnrepository
 
-import java.net.URI
-import java.net.URL
-import java.time.LocalDate
-import java.util.Date
+import java.util.Optional
 
-/**
- * Represents a Maven artifact.
- *
- * In a typical [pom.xml], this corresponds to the dependency section:
- * ```
- *  <dependency>
- *      <groupId>...</groupId>
- *      <artifactId>...</artifactId>
- *      <version>...</version>
- *  </dependency>
- * ```
- */
-data class Artifact(
-    val groupId: String,
-    val id: String,
-    val version: String,
-    val license: String,
-    val homepage: URI,
-    val date: LocalDate,
-    val snippets: List<Snippet>
-)
+interface MvnRepositoryApi {
+
+    fun getRepositories(): List<Repository>
+
+    fun getArtifact(groupId: String,
+                    artifactId: String,
+                    version: String): Optional<Artifact>
+
+    fun search(query: String) = search(query, 1)
+
+    fun search(query: String, page: Int): Page<ArtifactEntry>
+}

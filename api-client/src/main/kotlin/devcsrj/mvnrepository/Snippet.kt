@@ -13,15 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package devcsrj.maven
+package devcsrj.mvnrepository
 
-import java.time.LocalDate
+data class Snippet(
+    val type: Type,
+    val value: String) {
 
-data class ArtifactEntry(
+    enum class Type {
 
-    val groupId: String,
-    val id: String,
-    val license: String,
-    val description: String,
-    val releaseDate: LocalDate
-)
+        MAVEN,
+        GRADLE,
+        SBT,
+        IVY,
+        GRAPE,
+        LEININGEN,
+        BUILDER
+    }
+}
