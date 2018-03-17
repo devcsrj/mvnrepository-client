@@ -15,19 +15,11 @@
  */
 package devcsrj.mvnrepository
 
-import java.util.Optional
+import pl.droidsonroids.jspoon.annotation.Selector
 
-interface MvnRepositoryApi {
+internal class ArtifactVersionsPage {
 
-    fun getRepositories(): List<Repository>
+    @Selector("a.vbtn.release")
+    lateinit var versions: List<String>
 
-    fun getArtifact(groupId: String,
-                    artifactId: String,
-                    version: String): Optional<Artifact>
-
-    fun getArtifactVersions(groupId: String, artifactId: String): List<String>
-
-    fun search(query: String) = search(query, 1)
-
-    fun search(query: String, page: Int): Page<ArtifactEntry>
 }

@@ -72,6 +72,18 @@ internal class ScrapingMvnRepositoryApi(
 
     override fun getRepositories(): List<Repository> = repositories()
 
+    override fun getArtifactVersions(groupId: String, artifactId: String): List<String> {
+        val response = pageApi.getArtifactVersionsPage(groupId, artifactId).execute()
+        if (!response.isSuccessful) {
+            logger.warn("Request to $baseUrl failed while fetching versions for artifact '" +
+                "$groupId:$artifactId', got: ${response.code()}")
+            return emptyList()
+        }
+
+        val body = response.body() ?: return emptyList()
+        return body.versions
+    }
+
     override fun getArtifact(groupId: String, artifactId: String, version: String): Optional<Artifact> {
         val response = pageApi.getArtifactPage(groupId, artifactId, version).execute()
         if (!response.isSuccessful) {

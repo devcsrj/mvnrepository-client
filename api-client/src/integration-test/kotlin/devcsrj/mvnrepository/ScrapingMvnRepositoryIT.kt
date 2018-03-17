@@ -17,6 +17,7 @@ package devcsrj.mvnrepository
 
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
+import org.bouncycastle.crypto.tls.ConnectionEnd.server
 import org.testng.annotations.AfterClass
 import org.testng.annotations.BeforeClass
 import org.testng.annotations.Test
@@ -45,8 +46,16 @@ class ScrapingMvnRepositoryIT {
         assertEquals(20, repositories.size)
     }
 
+
     @Test
-    fun `can parse page from groupId-artifactId-version`() {
+    fun `can parse artifact versions page`() {
+        val versions = api.getArtifactVersions("io.projectreactor", "reactor-core")
+
+        assertFalse { versions.isEmpty() }
+    }
+
+    @Test
+    fun `can parse page from artifact page`() {
         val artifact = api.getArtifact("io.projectreactor", "reactor-core", "3.1.5.RELEASE")
 
         assertTrue { artifact.isPresent }

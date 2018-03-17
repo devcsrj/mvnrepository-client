@@ -44,6 +44,16 @@ class ScrapingMvnRepositoryApiTest : BaseApiMockTest() {
     }
 
     @Test
+    fun `can parse artifact versions page`() {
+        val server = serverWithResponses("/responses/artifact-versions-page.html")
+
+        val api = ScrapingMvnRepositoryApi(server.url("/"), OkHttpClient())
+        val versions = api.getArtifactVersions("io.projectreactor", "reactor-core")
+
+        assertFalse { versions.isEmpty() }
+    }
+
+    @Test
     fun `can parse artifact page`() {
         val server = serverWithResponses("/responses/artifact-page.html")
 
