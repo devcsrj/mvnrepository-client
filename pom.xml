@@ -232,6 +232,9 @@
                         <exclude>**/test/resources/**/**</exclude>
                         <exclude>.editorconfig</exclude>
                         <exclude>.gitattributes</exclude>
+                        <exclude>.mvn/**</exclude>
+                        <exclude>mvnw</exclude>
+                        <exclude>mvnw.cmd</exclude>
                     </excludes>
                     <mapping>
                         <kt>JAVADOC_STYLE</kt>
