@@ -19,16 +19,15 @@ import org.jsoup.nodes.Element
 import pl.droidsonroids.jspoon.ElementConverter
 import pl.droidsonroids.jspoon.annotation.Selector
 import java.net.URI
-import java.net.URL
 
 /**
  * Transforms href attributes into a URL.
  */
-internal class HrefElementConverter : ElementConverter<URL> {
+internal class HrefElementConverter : ElementConverter<URI> {
 
-    override fun convert(node: Element?, selector: Selector): URL {
-        val href = node?.selectFirst(selector.value)?.attr("href")!!
-        return URI.create(href).toURL()
+    override fun convert(root: Element?, selector: Selector): URI {
+        val href = root?.selectFirst(selector.value)?.attr("href")!!
+        return URI.create(href)
     }
 
 }

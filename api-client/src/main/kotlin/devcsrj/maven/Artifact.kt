@@ -15,7 +15,9 @@
  */
 package devcsrj.maven
 
+import java.net.URI
 import java.net.URL
+import java.time.LocalDate
 import java.util.Date
 
 /**
@@ -35,7 +37,7 @@ data class Artifact(
     val id: String,
     val version: String,
     val license: String,
-    val homepage: URL,
-    val date: Date,
+    val homepage: URI,
+    val date: LocalDate,
     val snippets: List<Snippet>
 )

@@ -21,7 +21,11 @@ import okhttp3.mockwebserver.MockWebServer
 import okio.Buffer
 import okio.Okio
 import org.testng.annotations.Test
+import java.net.URI
+import java.time.LocalDate
+import java.time.Month
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 class ScrapingMvnRepositoryApiTest {
 
@@ -39,10 +43,18 @@ class ScrapingMvnRepositoryApiTest {
         val artifact = api.getArtifact("io.projectreactor", "reactor-core", "3.1.5.RELEASE")
 
         assert(artifact.isPresent)
-        assertEquals("io.projectreactor", artifact.get().groupId)
-        assertEquals("reactor-core", artifact.get().id)
-        assertEquals("3.1.5.RELEASE", artifact.get().version)
-
+        artifact.get().apply {
+            assertEquals("io.projectreactor", groupId)
+            assertEquals("reactor-core", id)
+            assertEquals("3.1.5.RELEASE", version)
+            assertEquals("Apache 2.0", license)
+            assertEquals(LocalDate.of(2018, Month.FEBRUARY, 27), date)
+            assertEquals(URI.create("https://github.com/reactor/reactor-core"), homepage)
+            assertFalse { snippets.isEmpty() }
+            snippets.forEach {
+                assertFalse { it.value.isEmpty() }
+            }
+        }
     }
 
 }

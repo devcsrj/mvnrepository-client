@@ -16,7 +16,7 @@
 package devcsrj.maven
 
 import pl.droidsonroids.jspoon.annotation.Selector
-import java.net.URL
+import java.net.URI
 import java.util.Date
 
 internal class ArtifactSelector {
@@ -24,11 +24,8 @@ internal class ArtifactSelector {
     @Selector("#maincontent > table > tbody > tr:nth-child(1) > td > span")
     lateinit var license: String
 
-    @Selector("#maincontent > table > tbody > tr:nth-child(2) > td > a", converter = HrefElementConverter::class)
-    lateinit var organizationUrl: URL
-
     @Selector("#maincontent > table > tbody > tr:nth-child(3) > td > a", converter = HrefElementConverter::class)
-    lateinit var homepage: URL
+    lateinit var homepage: URI
 
     @Selector("#maincontent > table > tbody > tr:nth-child(4) > td", format = "(MMM dd, yyyy)")
     lateinit var date: Date
