@@ -15,6 +15,8 @@
  */
 package devcsrj.maven
 
+import devcsrj.maven.ScrapingMvnRepositoryApi.Companion.MAX_LIMIT
+import devcsrj.maven.ScrapingMvnRepositoryApi.Companion.MAX_PAGE
 import okhttp3.OkHttpClient
 import org.testng.annotations.Test
 import java.net.URI
@@ -42,7 +44,7 @@ class ScrapingMvnRepositoryApiTest : BaseApiMockTest() {
     }
 
     @Test
-    fun `can parse page from groupId-artifactId-version`() {
+    fun `can parse artifact page`() {
         val server = serverWithResponses("/responses/artifact-page.html")
 
         val api = ScrapingMvnRepositoryApi(server.url("/"), OkHttpClient())
@@ -63,4 +65,18 @@ class ScrapingMvnRepositoryApiTest : BaseApiMockTest() {
         }
     }
 
+    @Test
+    fun `can parse search results page`() {
+        val server = serverWithResponses("/responses/search-reactor-page-p1.html")
+
+        val api = ScrapingMvnRepositoryApi(server.url("/"), OkHttpClient())
+        val result = api.search("reactor")
+
+        assertEquals(1, result.number)
+        assertEquals(545, result.totalItems)
+        assertEquals(MAX_PAGE, result.totalPages)
+        assertEquals(MAX_LIMIT, result.limit)
+        assertEquals(MAX_LIMIT, result.items.size)
+
+    }
 }

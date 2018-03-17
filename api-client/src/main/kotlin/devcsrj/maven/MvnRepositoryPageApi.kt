@@ -22,6 +22,11 @@ import retrofit2.http.Query
 
 internal interface MvnRepositoryPageApi {
 
+    @GET("/search")
+    fun search(@Query("q") query: String,
+               @Query("p") page: Int,
+               @Query("sort") sort: String): Call<ArtifactSearchEntriesPage>
+
     @GET("/repos")
     fun getRepositoriesPage(@Query("p") page: Int): Call<RepositoriesPage>
 

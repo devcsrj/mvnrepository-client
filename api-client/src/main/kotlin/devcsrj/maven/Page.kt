@@ -15,17 +15,33 @@
  */
 package devcsrj.maven
 
-import java.util.Optional
+data class Page<out T>(
+    /**
+     * The current page number.
+     */
+    val number: Int,
+    /**
+     * The maximum items to fetch per page.
+     */
+    val limit: Int,
+    /**
+     * The actual result collection.
+     */
+    val items: List<T>,
+    /**
+     * The total number of pages.
+     */
+    val totalPages: Int,
+    /**
+     * The total number of items.
+     */
+    val totalItems: Long) {
 
-interface MvnRepositoryApi {
+    companion object {
 
-    fun getRepositories(): List<Repository>
-
-    fun getArtifact(groupId: String,
-                    artifactId: String,
-                    version: String): Optional<Artifact>
-
-    fun search(query: String) = search(query, 1)
-
-    fun search(query: String, page: Int): Page<ArtifactEntry>
+        @JvmStatic
+        fun <T> empty(): Page<T> {
+            return Page(1, 10, emptyList(), 0, 0)
+        }
+    }
 }

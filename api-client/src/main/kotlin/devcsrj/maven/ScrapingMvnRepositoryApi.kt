@@ -29,6 +29,12 @@ internal class ScrapingMvnRepositoryApi(
     private val baseUrl: HttpUrl,
     private val okHttpClient: OkHttpClient) : MvnRepositoryApi {
 
+    companion object {
+
+        const val MAX_LIMIT = 10 // Pages are always in 10 entries
+        const val MAX_PAGE = 50 // Site throws a 404 when exceeding 50
+    }
+
     private val logger: Logger = LoggerFactory.getLogger(MvnRepositoryApi::class.java)
     private val pageApi: MvnRepositoryPageApi
 
@@ -78,5 +84,24 @@ internal class ScrapingMvnRepositoryApi(
         val artifact = Artifact(groupId, artifactId, version, body.license, body.homepage, localDate, body.snippets)
 
         return Optional.of(artifact)
+    }
+
+    override fun search(query: String, page: Int): Page<ArtifactEntry> {
+        if (page < 1 || page > MAX_PAGE)
+            return Page.empty()
+
+        val response = pageApi.search(query, page, "relevance").execute()
+        if (!response.isSuccessful) {
+            logger.warn("Request to $baseUrl failed while searching for '$query' on page '$page'")
+            return Page.empty()
+        }
+
+        val body = response.body() ?: return Page.empty()
+        val entries = body.entries
+            .filter { it.isPopulated() }
+            .map { ArtifactEntry(it.groupId!!, it.artifactId!!, it.license!!, it.description!!, it.releaseDate!!) }
+
+        val totalPages = Math.min(Math.ceil((body.totalResults / MAX_LIMIT).toDouble()).toInt(), MAX_PAGE)
+        return Page(page, MAX_LIMIT, entries.toList(), totalPages, body.totalResults)
     }
 }

@@ -17,6 +17,7 @@ package devcsrj.maven
 
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
+import org.bouncycastle.crypto.tls.ConnectionEnd.server
 import org.testng.annotations.AfterClass
 import org.testng.annotations.BeforeClass
 import org.testng.annotations.Test
@@ -62,6 +63,19 @@ class ScrapingMvnRepositoryIT {
                 assertFalse { it.value.isEmpty() }
             }
         }
+    }
+
+
+    @Test
+    fun `can parse search results page`() {
+        val result = api.search("reactor")
+
+        assertEquals(1, result.number)
+        assertTrue { result.totalItems > 500 }
+        assertEquals(ScrapingMvnRepositoryApi.MAX_PAGE, result.totalPages)
+        assertEquals(ScrapingMvnRepositoryApi.MAX_LIMIT, result.limit)
+        assertEquals(ScrapingMvnRepositoryApi.MAX_LIMIT, result.items.size)
+
     }
 
     @AfterClass(alwaysRun = true)

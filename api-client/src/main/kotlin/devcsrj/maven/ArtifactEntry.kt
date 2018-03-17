@@ -15,17 +15,13 @@
  */
 package devcsrj.maven
 
-import java.util.Optional
+import java.time.LocalDate
 
-interface MvnRepositoryApi {
+data class ArtifactEntry(
 
-    fun getRepositories(): List<Repository>
-
-    fun getArtifact(groupId: String,
-                    artifactId: String,
-                    version: String): Optional<Artifact>
-
-    fun search(query: String) = search(query, 1)
-
-    fun search(query: String, page: Int): Page<ArtifactEntry>
-}
+    val groupId: String,
+    val id: String,
+    val license: String,
+    val description: String,
+    val releaseDate: LocalDate
+)
