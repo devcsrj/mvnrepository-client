@@ -18,8 +18,12 @@ package devcsrj.maven
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 internal interface MvnRepositoryPageApi {
+
+    @GET("/repos")
+    fun getRepositoriesPage(@Query("p") page: Int): Call<RepositoriesPage>
 
     @GET("/artifact/{groupId}/{artifactId}/{version}")
     fun getArtifactPage(@Path("groupId") groupId: String,

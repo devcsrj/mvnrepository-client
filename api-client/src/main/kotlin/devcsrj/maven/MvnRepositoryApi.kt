@@ -19,6 +19,8 @@ import java.util.Optional
 
 interface MvnRepositoryApi {
 
+    fun getRepositories(): List<Repository>
+
     fun getArtifact(groupId: String,
                     artifactId: String,
                     version: String): Optional<Artifact>

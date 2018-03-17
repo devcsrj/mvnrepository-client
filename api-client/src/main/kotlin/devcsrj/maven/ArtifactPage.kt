@@ -26,7 +26,8 @@ internal class ArtifactPage {
     @Selector("#maincontent > table > tbody > tr:nth-child(1) > td > span")
     lateinit var license: String
 
-    @Selector("#maincontent > table > tbody > tr:nth-child(3) > td > a", converter = HrefElementConverter::class)
+    @Selector("#maincontent > table > tbody > tr:nth-child(3) > td > a",
+        attr = "href", converter = UriElementConverter::class)
     lateinit var homepage: URI
 
     @Selector("#maincontent > table > tbody > tr:nth-child(4) > td", format = "(MMM dd, yyyy)")

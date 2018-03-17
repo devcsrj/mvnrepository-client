@@ -16,33 +16,39 @@
 package devcsrj.maven
 
 import okhttp3.OkHttpClient
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import okio.Buffer
-import okio.Okio
 import org.testng.annotations.Test
 import java.net.URI
 import java.time.LocalDate
 import java.time.Month
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
-class ScrapingMvnRepositoryApiTest {
+class ScrapingMvnRepositoryApiTest : BaseApiMockTest() {
+
+    @Test
+    fun `can parse repositories page`() {
+        val server = serverWithResponses(
+            "/responses/repositories-page-p1.html",
+            "/responses/repositories-page-p2.html",
+            "/responses/repositories-page-p3.html"
+        )
+
+        val api = ScrapingMvnRepositoryApi(server.url("/"), OkHttpClient())
+        val repositories = api.getRepositories()
+
+        assertFalse { repositories.isEmpty() }
+        assertEquals(20, repositories.size)
+    }
 
     @Test
     fun `can parse page from groupId-artifactId-version`() {
-        val server = MockWebServer()
-        val buffer = Buffer()
-        javaClass.getResourceAsStream("/responses/groupId-artifactId-version.html").use {
-            buffer.writeAll(Okio.source(it))
-        }
-        server.enqueue(MockResponse().setBody(buffer))
-        server.start()
+        val server = serverWithResponses("/responses/groupId-artifactId-version.html")
 
         val api = ScrapingMvnRepositoryApi(server.url("/"), OkHttpClient())
         val artifact = api.getArtifact("io.projectreactor", "reactor-core", "3.1.5.RELEASE")
 
-        assert(artifact.isPresent)
+        assertTrue { artifact.isPresent }
         artifact.get().apply {
             assertEquals("io.projectreactor", groupId)
             assertEquals("reactor-core", id)

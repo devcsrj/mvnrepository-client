@@ -33,6 +33,7 @@
     <properties>
 
         <jspoon.version>1.2.2</jspoon.version>
+        <funktionale.version>1.2</funktionale.version>
     </properties>
 
     <dependencies>
@@ -40,6 +41,11 @@
             <groupId>pl.droidsonroids.retrofit2</groupId>
             <artifactId>converter-jspoon</artifactId>
             <version>${jspoon.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.funktionale</groupId>
+            <artifactId>funktionale-memoization</artifactId>
+            <version>${funktionale.version}</version>
         </dependency>
 
         <dependency>
