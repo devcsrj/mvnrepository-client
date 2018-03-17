@@ -15,6 +15,8 @@
  */
 package devcsrj.maven
 
+import org.jsoup.nodes.Element
+import pl.droidsonroids.jspoon.ElementConverter
 import pl.droidsonroids.jspoon.annotation.Selector
 import java.net.URI
 import java.util.Date
@@ -34,4 +36,21 @@ internal class ArtifactPage {
     lateinit var snippets: List<Snippet>
 
 
+    internal class SnippetElementConverter : ElementConverter<List<Snippet>> {
+
+        override fun convert(node: Element?, selector: Selector): List<Snippet> {
+            val elem = node?.selectFirst(selector.value) ?: return emptyList()
+
+            // Under this element there are <textarea>s with id '$snippetType-a'
+            val snippets = mutableListOf<Snippet>()
+            for (type in Snippet.Type.values()) {
+                val prefix = type.name.toLowerCase()
+                val textarea = elem.selectFirst("#$prefix-a") ?: continue
+
+                snippets.add(Snippet(type, textarea.`val`()))
+            }
+            return snippets.toList()
+        }
+
+    }
 }
