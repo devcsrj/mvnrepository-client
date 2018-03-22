@@ -29,6 +29,7 @@
 
     <name>mvnrepository | API Client</name>
     <artifactId>mvnrepository-api-client</artifactId>
+    <packaging>jar</packaging>
 
     <properties>
 

@@ -27,7 +27,5 @@ interface MvnRepositoryApi {
 
     fun getArtifactVersions(groupId: String, artifactId: String): List<String>
 
-    fun search(query: String) = search(query, 1)
-
-    fun search(query: String, page: Int): Page<ArtifactEntry>
+    fun search(query: String, page: Int = 1): Page<ArtifactEntry>
 }

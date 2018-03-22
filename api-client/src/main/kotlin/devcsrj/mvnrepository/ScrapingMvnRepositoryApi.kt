@@ -25,9 +25,9 @@ import retrofit2.Retrofit
 import java.time.ZoneId
 import java.util.Optional
 
-internal class ScrapingMvnRepositoryApi(
-    private val baseUrl: HttpUrl,
-    private val okHttpClient: OkHttpClient) : MvnRepositoryApi {
+class ScrapingMvnRepositoryApi(
+    private val baseUrl: HttpUrl = HttpUrl.parse("https://mvnrepository.com/")!!,
+    private val okHttpClient: OkHttpClient = OkHttpClient()) : MvnRepositoryApi {
 
     companion object {
 
