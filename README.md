@@ -13,7 +13,7 @@ Grab via Maven:
 ```xml
 <dependency>
     <groupId>com.github.devcsrj</groupId>
-    <artifactId>mvnrepository-project</artifactId>
+    <artifactId>mvnrepository-api-client</artifactId>
     <version>1.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -21,7 +21,7 @@ Grab via Maven:
 or Gradle:
 
 ```groovy
-compile 'com.github.devcsrj:mvnrepository-project:1.0-SNAPSHOT'
+compile 'com.github.devcsrj:mvnrepository-api-client:1.0-SNAPSHOT'
 ```
 
 
