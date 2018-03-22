@@ -28,20 +28,25 @@ internal class RepositoriesPage {
     internal class Entry {
 
         @Selector("div.im-header > h2 > a", converter = IdConverter::class)
-        lateinit var id: String
+        var id: String? = null
 
         @Selector("div.im-header > h2 > a")
-        lateinit var name: String
+        var name: String? = null
 
         @Selector("div.im-header > p", converter = UriElementConverter::class)
-        lateinit var uri: URI
+        var uri: URI? = null
+
+        /**
+         * @return whether this object is properly populated from the page
+         */
+        fun isPopulated(): Boolean = id != null && name != null && uri != null
 
         companion object IdConverter : ElementConverter<String> {
 
-            override fun convert(node: Element, selector: Selector): String {
-                val href = node.selectFirst(selector.value).attr("href")
+            override fun convert(node: Element, selector: Selector): String? {
+                val href = node.selectFirst(selector.value)?.attr("href")
                 // hrefs are in the form of: /repos/{id}
-                return href.substringAfterLast("/")
+                return href?.substringAfterLast("/")
             }
 
         }

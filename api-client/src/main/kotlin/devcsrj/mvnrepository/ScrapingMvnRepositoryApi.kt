@@ -64,7 +64,9 @@ class ScrapingMvnRepositoryApi(
                 if (page.entries.isEmpty())
                     break // stop when the page no longer shows an entry (we exceeded max page)
 
-                repos.addAll(page.entries.map { Repository(it.id, it.name, it.uri) })
+                repos.addAll(page.entries
+                    .filter { it.isPopulated() }
+                    .map { Repository(it.id!!, it.name!!, it.uri!!) })
             }
             repos.toList()
         }.memoize()
@@ -111,7 +113,7 @@ class ScrapingMvnRepositoryApi(
         val body = response.body() ?: return Page.empty()
         val entries = body.entries
             .filter { it.isPopulated() }
-            .map { ArtifactEntry(it.groupId!!, it.artifactId!!, it.license!!, it.description!!, it.releaseDate!!) }
+            .map { ArtifactEntry(it.groupId!!, it.artifactId!!, it.license, it.description!!, it.releaseDate!!) }
 
         val totalPages = Math.min(Math.ceil((body.totalResults / MAX_LIMIT).toDouble()).toInt(), MAX_PAGE)
         return Page(page, MAX_LIMIT, entries.toList(), totalPages, body.totalResults)

@@ -21,7 +21,7 @@ data class ArtifactEntry(
 
     val groupId: String,
     val id: String,
-    val license: String,
+    val license: String?,
     val description: String,
-    val releaseDate: LocalDate
+    val lastRelease: LocalDate
 )
