@@ -32,6 +32,7 @@
 
     <modules>
         <module>api-client</module>
+        <module>cli</module>
     </modules>
 
     <properties>
@@ -235,6 +236,7 @@
                         <exclude>.mvn/**</exclude>
                         <exclude>mvnw</exclude>
                         <exclude>mvnw.cmd</exclude>
+                        <exclude>**/*.log</exclude>
                     </excludes>
                     <mapping>
                         <kt>JAVADOC_STYLE</kt>
