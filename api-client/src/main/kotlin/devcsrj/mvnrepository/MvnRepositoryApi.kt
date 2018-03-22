@@ -15,6 +15,8 @@
  */
 package devcsrj.mvnrepository
 
+import okhttp3.HttpUrl
+import okhttp3.OkHttpClient
 import java.util.Optional
 
 interface MvnRepositoryApi {
@@ -28,4 +30,12 @@ interface MvnRepositoryApi {
     fun getArtifactVersions(groupId: String, artifactId: String): List<String>
 
     fun search(query: String, page: Int = 1): Page<ArtifactEntry>
+
+    companion object Factory {
+
+        fun create(url: HttpUrl = HttpUrl.parse("https://mvnrepository.com/")!!,
+                   okHttpClient: OkHttpClient = OkHttpClient()): MvnRepositoryApi {
+            return ScrapingMvnRepositoryApi(url, okHttpClient)
+        }
+    }
 }

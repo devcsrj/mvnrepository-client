@@ -27,7 +27,7 @@ import org.springframework.shell.jline.PromptProvider
 internal open class Cli {
 
     @Bean
-    open fun mvnRepositoryApi() = ScrapingMvnRepositoryApi()
+    open fun mvnRepositoryApi() = MvnRepositoryApi.create()
 
     @Bean
     open fun promptProvider() = PromptProvider {
