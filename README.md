@@ -14,14 +14,14 @@ Grab via Maven:
 <dependency>
     <groupId>com.github.devcsrj</groupId>
     <artifactId>mvnrepository-api-client</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${mvnrepo.version}</version>
 </dependency>
 ```
 
 or Gradle:
 
 ```groovy
-compile 'com.github.devcsrj:mvnrepository-api-client:1.0-SNAPSHOT'
+compile 'com.github.devcsrj:mvnrepository-api-client:${mvnrepo.version}'
 ```
 
 
