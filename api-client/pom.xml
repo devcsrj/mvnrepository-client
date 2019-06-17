@@ -24,7 +24,7 @@
     <parent>
         <groupId>com.github.devcsrj</groupId>
         <artifactId>mvnrepository-project</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
 
     <name>mvnrepository | API Client</name>
