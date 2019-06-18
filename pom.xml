@@ -22,9 +22,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.devcsrj</groupId>
-    <artifactId>mvnrepository-project</artifactId>
+    <artifactId>mvnrepository-api-client</artifactId>
     <version>1.0.1</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>mvnrepository</name>
     <description>Client for mvnrepository.com</description>
@@ -55,11 +55,6 @@
         </developer>
     </developers>
 
-    <modules>
-        <module>api-client</module>
-        <module>cli</module>
-    </modules>
-
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -69,6 +64,8 @@
 
         <kotlin.version>1.2.30</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+        <jspoon.version>1.2.2</jspoon.version>
+        <funktionale.version>1.2</funktionale.version>
 
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
@@ -108,8 +105,29 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+        <dependency>
+            <groupId>pl.droidsonroids.retrofit2</groupId>
+            <artifactId>converter-jspoon</artifactId>
+            <version>${jspoon.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.funktionale</groupId>
+            <artifactId>funktionale-memoization</artifactId>
+            <version>${funktionale.version}</version>
+        </dependency>
 
         <!-- Tests -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
+            <version>3.8.0</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test</artifactId>
@@ -134,6 +152,19 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
