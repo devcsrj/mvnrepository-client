@@ -36,24 +36,7 @@ Page<ArtifactEntry> page = api.search("reactor-core");
 
 > The above client defaults to [https://mvnrepository.com]().
 
-This repository also provides a `cli` tool that works on top of `MvnRepositoryApi`. To do a quick run:
-
-```bash
-$ cd cli
-$ ../mvnw spring-boot:run
-...
-maven: search --query reactor-core
-...
-maven: search reactor-core
-...
-```
-
-You can produce and execute a runnable jar of the cli tool by:
-
-```bash
-$ ./mvnw package
-$ java -jar cli/target/mvnrepository-cli-*.jar
-```
+For a CLI tool, checkout [jarl](https://github.com/devcsrj/jarl).
 
 License
 ---
