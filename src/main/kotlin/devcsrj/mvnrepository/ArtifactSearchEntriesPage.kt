@@ -20,6 +20,7 @@ import pl.droidsonroids.jspoon.ElementConverter
 import pl.droidsonroids.jspoon.annotation.Selector
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 internal class ArtifactSearchEntriesPage {
 
@@ -58,7 +59,7 @@ internal class ArtifactSearchEntriesPage {
             override fun convert(root: Element?, selector: Selector): LocalDate? {
                 val node = root?.selectFirst(selector.value)?.text() ?: return null
                 val str = node.substringAfter(PREFIX)
-                return LocalDate.parse(str, DateTimeFormatter.ofPattern("MMM d, yyyy"))
+                return LocalDate.parse(str, DateTimeFormatter.ofPattern("MMM d, uuuu", Locale.ENGLISH))
             }
 
         }
