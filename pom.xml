@@ -23,7 +23,7 @@
 
     <groupId>com.github.devcsrj</groupId>
     <artifactId>mvnrepository-api-client</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
     <packaging>jar</packaging>
 
     <name>mvnrepository</name>
