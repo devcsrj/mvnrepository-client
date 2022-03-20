@@ -15,6 +15,7 @@
  */
 package devcsrj.mvnrepository
 
+import java.math.BigDecimal
 import java.net.URI
 import java.time.LocalDate
 
@@ -37,5 +38,6 @@ data class Artifact(
     val license: String,
     val homepage: URI,
     val date: LocalDate,
+    val usedBy: BigDecimal,
     val snippets: List<Snippet>
 )

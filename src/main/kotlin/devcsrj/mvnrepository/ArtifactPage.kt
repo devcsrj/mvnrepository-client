@@ -18,6 +18,7 @@ package devcsrj.mvnrepository
 import org.jsoup.nodes.Element
 import pl.droidsonroids.jspoon.ElementConverter
 import pl.droidsonroids.jspoon.annotation.Selector
+import java.math.BigDecimal
 import java.net.URI
 import java.util.Date
 
@@ -35,6 +36,10 @@ internal class ArtifactPage {
 
     @Selector("#snippets", converter = SnippetElementConverter::class)
     lateinit var snippets: List<Snippet>
+
+    @Selector("#maincontent > table > tbody",
+       converter = UsedByCountConverter::class)
+    lateinit var usedBy: BigDecimal
 
 
     internal class SnippetElementConverter : ElementConverter<List<Snippet>> {

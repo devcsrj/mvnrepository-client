@@ -19,6 +19,7 @@ import devcsrj.mvnrepository.ScrapingMvnRepositoryApi.Companion.MAX_LIMIT
 import devcsrj.mvnrepository.ScrapingMvnRepositoryApi.Companion.MAX_PAGE
 import okhttp3.OkHttpClient
 import org.testng.annotations.Test
+import java.math.BigDecimal
 import java.net.URI
 import java.time.LocalDate
 import java.time.Month
@@ -68,6 +69,8 @@ class ScrapingMvnRepositoryApiTest : BaseApiMockTest() {
             assertEquals("Apache 2.0", license)
             assertEquals(LocalDate.of(2018, Month.FEBRUARY, 27), date)
             assertEquals(URI.create("https://github.com/reactor/reactor-core"), homepage)
+            // this may increase over time. So just checking for >=171.
+            assertTrue(usedBy>= BigDecimal(171))
             assertFalse { snippets.isEmpty() }
             snippets.forEach {
                 assertFalse { it.value.isEmpty() }

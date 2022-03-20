@@ -95,7 +95,7 @@ internal class ScrapingMvnRepositoryApi(
         }
         val body = response.body() ?: return Optional.empty()
         val localDate = body.date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        val artifact = Artifact(groupId, artifactId, version, body.license, body.homepage, localDate, body.snippets)
+        val artifact = Artifact(groupId, artifactId, version, body.license, body.homepage, localDate,body.usedBy, body.snippets)
 
         return Optional.of(artifact)
     }
