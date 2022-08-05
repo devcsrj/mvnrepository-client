@@ -17,7 +17,6 @@ package devcsrj.mvnrepository
 
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
-import org.funktionale.memoization.memoize
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import pl.droidsonroids.retrofit2.JspoonConverterFactory
@@ -37,9 +36,7 @@ internal class ScrapingMvnRepositoryApi(
 
     private val logger: Logger = LoggerFactory.getLogger(MvnRepositoryApi::class.java)
     private val pageApi: MvnRepositoryPageApi
-
-    private val repositories: () -> List<Repository>
-
+    
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -48,31 +45,28 @@ internal class ScrapingMvnRepositoryApi(
             .validateEagerly(true)
             .build()
         pageApi = retrofit.create(MvnRepositoryPageApi::class.java)
-
-        // Repositories are unlikely to change, so we memoize them instead of fetching them every time
-        repositories = {
-            var p = 1
-            val repos = mutableListOf<Repository>()
-            while (true) { // there are only 2(?) pages, we'll query them all at once now
-                val response = pageApi.getRepositoriesPage(p).execute()
-                p++ // next page
-                if (!response.isSuccessful) {
-                    logger.warn("Request to $baseUrl failed while fetching repositories, got: ${response.code()}")
-                    break
-                }
-                val page = response.body() ?: break;
-                if (page.entries.isEmpty())
-                    break // stop when the page no longer shows an entry (we exceeded max page)
-
-                repos.addAll(page.entries
-                    .filter { it.isPopulated() }
-                    .map { Repository(it.id!!, it.name!!, it.uri!!) })
-            }
-            repos.toList()
-        }.memoize()
     }
 
-    override fun getRepositories(): List<Repository> = repositories()
+    override fun getRepositories(): List<Repository> {
+        var p = 1
+        val repos = mutableListOf<Repository>()
+        while (true) { // there are only 2(?) pages, we'll query them all at once now
+            val response = pageApi.getRepositoriesPage(p).execute()
+            p++ // next page
+            if (!response.isSuccessful) {
+                logger.warn("Request to $baseUrl failed while fetching repositories, got: ${response.code()}")
+                break
+            }
+            val page = response.body() ?: break;
+            if (page.entries.isEmpty())
+                break // stop when the page no longer shows an entry (we exceeded max page)
+
+            repos.addAll(page.entries
+                .filter { it.isPopulated() }
+                .map { Repository(it.id!!, it.name!!, it.uri!!) })
+        }
+        return repos.toList()
+    }
 
     override fun getArtifactVersions(groupId: String, artifactId: String): List<String> {
         val response = pageApi.getArtifactVersionsPage(groupId, artifactId).execute()
