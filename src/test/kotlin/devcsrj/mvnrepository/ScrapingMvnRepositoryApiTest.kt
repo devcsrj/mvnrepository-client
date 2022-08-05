@@ -18,7 +18,7 @@ package devcsrj.mvnrepository
 import devcsrj.mvnrepository.ScrapingMvnRepositoryApi.Companion.MAX_LIMIT
 import devcsrj.mvnrepository.ScrapingMvnRepositoryApi.Companion.MAX_PAGE
 import okhttp3.OkHttpClient
-import org.testng.annotations.Test
+import org.junit.Test
 import java.net.URI
 import java.time.LocalDate
 import java.time.Month
