@@ -62,7 +62,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <kotlin.version>1.2.30</kotlin.version>
+        <kotlin.version>1.7.10</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <jspoon.version>1.2.2</jspoon.version>
         <funktionale.version>1.2</funktionale.version>
