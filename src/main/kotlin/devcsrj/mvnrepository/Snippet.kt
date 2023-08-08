@@ -23,10 +23,12 @@ data class Snippet(
 
         MAVEN,
         GRADLE,
+        GRADLE_SHORT,
+        GRADLE_SHORT_KOTLIN,
         SBT,
         IVY,
         GRAPE,
         LEININGEN,
-        BUILDER
+        BUILDR
     }
 }

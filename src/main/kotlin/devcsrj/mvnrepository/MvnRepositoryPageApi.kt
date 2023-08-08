@@ -28,7 +28,7 @@ internal interface MvnRepositoryPageApi {
                @Query("sort") sort: String): Call<ArtifactSearchEntriesPage>
 
     @GET("/repos")
-    fun getRepositoriesPage(@Query("p") page: Int): Call<RepositoriesPage>
+    fun getRepositoriesPage(): Call<RepositoriesPage>
 
     @GET("/artifact/{groupId}/{artifactId}")
     fun getArtifactVersionsPage(@Path("groupId") groupId: String,

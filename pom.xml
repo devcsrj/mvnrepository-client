@@ -23,7 +23,7 @@
 
     <groupId>com.github.devcsrj</groupId>
     <artifactId>mvnrepository-api-client</artifactId>
-    <version>1.1.1</version>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>mvnrepository</name>
@@ -62,31 +62,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <kotlin.version>1.2.30</kotlin.version>
+        <kotlin.version>1.9.0</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-        <jspoon.version>1.2.2</jspoon.version>
-        <funktionale.version>1.2</funktionale.version>
+        <jspoon.version>1.3.2</jspoon.version>
 
-        <slf4j.version>1.7.25</slf4j.version>
+        <slf4j.version>2.0.7</slf4j.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <!-- Tests -->
-            <dependency>
-                <groupId>org.testng</groupId>
-                <artifactId>testng</artifactId>
-                <version>6.11</version>
-                <scope>test</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>junit</groupId>
-                        <artifactId>junit</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -110,18 +91,8 @@
             <artifactId>converter-jspoon</artifactId>
             <version>${jspoon.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.funktionale</groupId>
-            <artifactId>funktionale-memoization</artifactId>
-            <version>${funktionale.version}</version>
-        </dependency>
 
         <!-- Tests -->
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>mockwebserver</artifactId>
@@ -130,7 +101,7 @@
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test</artifactId>
+            <artifactId>kotlin-test-junit</artifactId>
             <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
@@ -151,6 +122,7 @@
     </distributionManagement>
 
     <build>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -167,32 +139,29 @@
             </plugin>
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
+                <configuration>
+                    <jvmTarget>${maven.compiler.target}</jvmTarget>
+                </configuration>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <version>${kotlin.version}</version>
                 <executions>
                     <execution>
                         <id>compile</id>
+                        <phase>compile</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
-                        <configuration>
-                            <sourceDirs>
-                                <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
-                                <sourceDir>${project.basedir}/src/main/java</sourceDir>
-                            </sourceDirs>
-                        </configuration>
                     </execution>
                     <execution>
                         <id>test-compile</id>
+                        <phase>test-compile</phase>
                         <goals>
                             <goal>test-compile</goal>
                         </goals>
                         <configuration>
                             <sourceDirs>
-                                <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
-                                <sourceDir>${project.basedir}/src/test/java</sourceDir>
-                                <sourceDir>${project.basedir}/src/integration-test/kotlin</sourceDir>
-                                <sourceDir>${project.basedir}/src/integration-test/java</sourceDir>
+                                <source>src/integration-test/kotlin</source>
+                                <source>src/test/kotlin</source>
                             </sourceDirs>
                         </configuration>
                     </execution>
@@ -319,6 +288,8 @@
                         <exclude>mvnw</exclude>
                         <exclude>mvnw.cmd</exclude>
                         <exclude>**/*.log</exclude>
+                        <exclude>EMPTY</exclude>
+                        <exclude>.github/**</exclude>
                     </excludes>
                     <mapping>
                         <kt>JAVADOC_STYLE</kt>
@@ -343,13 +314,6 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <skip.integration.tests>true</skip.integration.tests>
-                <skip.unit.tests>false</skip.unit.tests>
-            </properties>
-        </profile>
-        <profile>
-            <id>live</id>
-            <properties>
                 <skip.integration.tests>false</skip.integration.tests>
                 <skip.unit.tests>false</skip.unit.tests>
             </properties>
@@ -357,8 +321,8 @@
         <profile>
             <id>release</id>
             <properties>
-                <skip.integration.tests>false</skip.integration.tests>
-                <skip.unit.tests>false</skip.unit.tests>
+                <skip.integration.tests>true</skip.integration.tests>
+                <skip.unit.tests>true</skip.unit.tests>
                 <skip.javadoc>false</skip.javadoc>
             </properties>
             <build>
@@ -366,7 +330,7 @@
                     <plugin>
                         <groupId>org.jetbrains.dokka</groupId>
                         <artifactId>dokka-maven-plugin</artifactId>
-                        <version>0.9.16</version>
+                        <version>1.8.20</version>
                         <executions>
                             <execution>
                                 <phase>prepare-package</phase>
@@ -388,7 +352,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>3.1.0</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -398,6 +362,12 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
@@ -414,12 +384,4 @@
             </build>
         </profile>
     </profiles>
-
-    <repositories>
-        <repository>
-            <id>bintray</id>
-            <name>bintray</name>
-            <url>http://jcenter.bintray.com</url>
-        </repository>
-    </repositories>
 </project>

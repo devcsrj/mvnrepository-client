@@ -18,7 +18,7 @@ package devcsrj.mvnrepository
 import devcsrj.mvnrepository.ScrapingMvnRepositoryApi.Companion.MAX_LIMIT
 import devcsrj.mvnrepository.ScrapingMvnRepositoryApi.Companion.MAX_PAGE
 import okhttp3.OkHttpClient
-import org.testng.annotations.Test
+import org.junit.Test
 import java.net.URI
 import java.time.LocalDate
 import java.time.Month
@@ -31,9 +31,7 @@ class ScrapingMvnRepositoryApiTest : BaseApiMockTest() {
     @Test
     fun `can parse repositories page`() {
         val server = serverWithResponses(
-            "/responses/repositories-page-p1.html",
-            "/responses/repositories-page-p2.html",
-            "/responses/repositories-page-p3.html"
+            "/responses/_repos.html",
         )
 
         val api = ScrapingMvnRepositoryApi(server.url("/"), OkHttpClient())
@@ -58,16 +56,17 @@ class ScrapingMvnRepositoryApiTest : BaseApiMockTest() {
         val server = serverWithResponses("/responses/artifact-page.html")
 
         val api = ScrapingMvnRepositoryApi(server.url("/"), OkHttpClient())
-        val artifact = api.getArtifact("io.projectreactor", "reactor-core", "3.1.5.RELEASE")
+        val artifact = api.getArtifact("io.projectreactor", "reactor-core", "3.5.8")
 
         assertTrue { artifact.isPresent }
         artifact.get().apply {
             assertEquals("io.projectreactor", groupId)
             assertEquals("reactor-core", id)
-            assertEquals("3.1.5.RELEASE", version)
+            assertEquals("3.5.8", version)
             assertEquals("Apache 2.0", license)
-            assertEquals(LocalDate.of(2018, Month.FEBRUARY, 27), date)
+            assertEquals(LocalDate.of(2023, Month.JULY, 11), date)
             assertEquals(URI.create("https://github.com/reactor/reactor-core"), homepage)
+            assertTrue(usedBy>= 171) // may increase over time
             assertFalse { snippets.isEmpty() }
             snippets.forEach {
                 assertFalse { it.value.isEmpty() }
@@ -83,7 +82,7 @@ class ScrapingMvnRepositoryApiTest : BaseApiMockTest() {
         val result = api.search("reactor")
 
         assertEquals(1, result.number)
-        assertEquals(545, result.totalItems)
+        assertEquals(1125, result.totalItems)
         assertEquals(MAX_PAGE, result.totalPages)
         assertEquals(MAX_LIMIT, result.limit)
         assertEquals(MAX_LIMIT, result.items.size)

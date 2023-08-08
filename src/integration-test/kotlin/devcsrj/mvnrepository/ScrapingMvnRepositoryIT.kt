@@ -17,10 +17,9 @@ package devcsrj.mvnrepository
 
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
-import org.bouncycastle.crypto.tls.ConnectionEnd.server
-import org.testng.annotations.AfterClass
-import org.testng.annotations.BeforeClass
-import org.testng.annotations.Test
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 import java.net.URI
 import java.time.LocalDate
 import java.time.Month
@@ -32,7 +31,7 @@ class ScrapingMvnRepositoryIT {
 
     private lateinit var api: MvnRepositoryApi
 
-    @BeforeClass
+    @Before
     fun setup() {
         val url = HttpUrl.parse("https://mvnrepository.com")!!
         api = ScrapingMvnRepositoryApi(url, OkHttpClient())
@@ -86,7 +85,7 @@ class ScrapingMvnRepositoryIT {
 
     }
 
-    @AfterClass(alwaysRun = true)
+    @After
     @Throws(Exception::class)
     fun tearDown() {
 

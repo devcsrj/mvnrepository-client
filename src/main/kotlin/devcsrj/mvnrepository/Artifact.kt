@@ -37,5 +37,6 @@ data class Artifact(
     val license: String,
     val homepage: URI,
     val date: LocalDate,
+    val usedBy: Long,
     val snippets: List<Snippet>
 )
