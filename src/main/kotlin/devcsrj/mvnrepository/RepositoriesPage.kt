@@ -27,13 +27,13 @@ internal class RepositoriesPage {
 
     internal class Entry {
 
-        @Selector("div.im-header > h2 > a", converter = IdConverter::class)
+        @Selector("h2.im-title > a",  attr = "href", converter = IdConverter::class)
         var id: String? = null
 
-        @Selector("div.im-header > h2 > a")
+        @Selector("h2.im-title > a")
         var name: String? = null
 
-        @Selector("div.im-header > p", converter = UriElementConverter::class)
+        @Selector("p.im-subtitle", converter = UriElementConverter::class)
         var uri: URI? = null
 
         /**
@@ -44,7 +44,7 @@ internal class RepositoriesPage {
         companion object IdConverter : ElementConverter<String> {
 
             override fun convert(node: Element, selector: Selector): String? {
-                val href = node.selectFirst(selector.value)?.attr("href")
+                val href = node.attr(selector.attr)
                 // hrefs are in the form of: /repos/{id}
                 return href?.substringAfterLast("/")
             }

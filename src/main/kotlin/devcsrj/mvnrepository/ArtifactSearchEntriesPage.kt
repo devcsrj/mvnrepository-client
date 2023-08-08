@@ -24,7 +24,7 @@ import java.util.*
 
 internal class ArtifactSearchEntriesPage {
 
-    @Selector("div.im")
+    @Selector("div.im:has(a)")
     lateinit var entries: List<Entry>
 
     @Selector("div.content > h2 > b")
@@ -56,10 +56,12 @@ internal class ArtifactSearchEntriesPage {
 
             private const val PREFIX = "Last Release on "
 
-            override fun convert(root: Element?, selector: Selector): LocalDate? {
-                val node = root?.selectFirst(selector.value)?.text() ?: return null
+            override fun convert(root: Element, selector: Selector): LocalDate? {
+                val node = root.text()
                 val str = node.substringAfter(PREFIX)
-                return LocalDate.parse(str, DateTimeFormatter.ofPattern("MMM d, uuuu", Locale.ENGLISH))
+                val pattern = DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.getDefault())
+                return LocalDate.parse(str, pattern)
+
             }
 
         }

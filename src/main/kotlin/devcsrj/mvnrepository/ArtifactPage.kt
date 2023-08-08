@@ -23,23 +23,23 @@ import java.util.*
 
 internal class ArtifactPage {
 
-    @Selector("main > div.content > table > tbody > tr:nth-child(1) > td > span")
+    @Selector("table.grid > tbody > tr:nth-child(1) > td > span")
     lateinit var license: String
 
-    @Selector("main > div.content > table > tbody > tr:nth-child(5) > td > a",
+    @Selector("table.grid > tbody > tr:nth-child(5) > td > a",
         attr = "href", converter = UriElementConverter::class)
     lateinit var homepage: URI
-    @Selector("main > div.content > table > tbody > tr:nth-child(6) > td", format = "MMM dd, yyyy")
+    @Selector("table.grid > tbody > tr:nth-child(6) > td", format = "MMM dd, yyyy")
     lateinit var date: Date
 
-    @Selector("div.snippets li > a", converter = SnippetElementConverter::class)
+    @Selector("div.snippets",  converter = SnippetElementConverter::class)
     lateinit var snippets: List<Snippet>
 
 
     internal class SnippetElementConverter : ElementConverter<List<Snippet>> {
 
-        override fun convert(node: Element?, selector: Selector): List<Snippet> {
-            val links = node?.select(selector.value) ?: return emptyList()
+        override fun convert(node: Element, selector: Selector): List<Snippet> {
+            val links = node.select("li a") ?: return emptyList()
 
             val snippets = mutableListOf<Snippet>()
             for (link in links) {
