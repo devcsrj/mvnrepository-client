@@ -289,6 +289,7 @@
                         <exclude>mvnw.cmd</exclude>
                         <exclude>**/*.log</exclude>
                         <exclude>EMPTY</exclude>
+                        <exclude>.github/**</exclude>
                     </excludes>
                     <mapping>
                         <kt>JAVADOC_STYLE</kt>
