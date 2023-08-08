@@ -2,6 +2,7 @@ mvnrepository | Client
 ===
 
 [![Java CI](https://github.com/devcsrj/mvnrepository-client/actions/workflows/maven.yml/badge.svg)](https://github.com/devcsrj/mvnrepository-client/actions/workflows/maven.yml)
+![Maven Central](https://img.shields.io/maven-central/v/com.github.devcsrj/mvnrepository-api-client)
 [![License](https://img.shields.io/github/license/devcsrj/mvnrepository-client.svg)](LICENSE)
 
 This project provides a client for accessing data from [mvnrepository](http://mvnrepository.com/) - a site that indexes artifacts for [Maven](http://maven.apache.org/).
