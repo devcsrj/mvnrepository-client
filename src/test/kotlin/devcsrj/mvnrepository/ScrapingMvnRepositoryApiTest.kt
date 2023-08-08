@@ -81,7 +81,7 @@ class ScrapingMvnRepositoryApiTest : BaseApiMockTest() {
         val result = api.search("reactor")
 
         assertEquals(1, result.number)
-        assertEquals(545, result.totalItems)
+        assertEquals(1125, result.totalItems)
         assertEquals(MAX_PAGE, result.totalPages)
         assertEquals(MAX_LIMIT, result.limit)
         assertEquals(MAX_LIMIT, result.items.size)

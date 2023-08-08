@@ -24,10 +24,10 @@ import java.util.*
 
 internal class ArtifactSearchEntriesPage {
 
-    @Selector("#maincontent > div.im")
+    @Selector("div.im")
     lateinit var entries: List<Entry>
 
-    @Selector("#maincontent > h2 > b")
+    @Selector("div.content > h2 > b")
     var totalResults: Long = 0L
 
     internal class Entry {
