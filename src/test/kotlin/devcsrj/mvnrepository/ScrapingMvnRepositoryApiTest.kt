@@ -56,15 +56,15 @@ class ScrapingMvnRepositoryApiTest : BaseApiMockTest() {
         val server = serverWithResponses("/responses/artifact-page.html")
 
         val api = ScrapingMvnRepositoryApi(server.url("/"), OkHttpClient())
-        val artifact = api.getArtifact("io.projectreactor", "reactor-core", "3.1.5.RELEASE")
+        val artifact = api.getArtifact("io.projectreactor", "reactor-core", "3.5.8")
 
         assertTrue { artifact.isPresent }
         artifact.get().apply {
             assertEquals("io.projectreactor", groupId)
             assertEquals("reactor-core", id)
-            assertEquals("3.1.5.RELEASE", version)
+            assertEquals("3.5.8", version)
             assertEquals("Apache 2.0", license)
-            assertEquals(LocalDate.of(2018, Month.FEBRUARY, 27), date)
+            assertEquals(LocalDate.of(2023, Month.JULY, 11), date)
             assertEquals(URI.create("https://github.com/reactor/reactor-core"), homepage)
             assertFalse { snippets.isEmpty() }
             snippets.forEach {

@@ -19,38 +19,55 @@ import org.jsoup.nodes.Element
 import pl.droidsonroids.jspoon.ElementConverter
 import pl.droidsonroids.jspoon.annotation.Selector
 import java.net.URI
-import java.util.Date
+import java.util.*
 
 internal class ArtifactPage {
 
-    @Selector("#maincontent > table > tbody > tr:nth-child(1) > td > span")
+    @Selector("main > div.content > table > tbody > tr:nth-child(1) > td > span")
     lateinit var license: String
 
-    @Selector("#maincontent > table > tbody > tr:nth-child(3) > td > a",
+    @Selector("main > div.content > table > tbody > tr:nth-child(5) > td > a",
         attr = "href", converter = UriElementConverter::class)
     lateinit var homepage: URI
-
-    @Selector("#maincontent > table > tbody > tr:nth-child(4) > td", format = "(MMM dd, yyyy)")
+    @Selector("main > div.content > table > tbody > tr:nth-child(6) > td", format = "MMM dd, yyyy")
     lateinit var date: Date
 
-    @Selector("#snippets", converter = SnippetElementConverter::class)
+    @Selector("div.snippets li > a", converter = SnippetElementConverter::class)
     lateinit var snippets: List<Snippet>
 
 
     internal class SnippetElementConverter : ElementConverter<List<Snippet>> {
 
         override fun convert(node: Element?, selector: Selector): List<Snippet> {
-            val elem = node?.selectFirst(selector.value) ?: return emptyList()
+            val links = node?.select(selector.value) ?: return emptyList()
 
-            // Under this element there are <textarea>s with id '$snippetType-a'
             val snippets = mutableListOf<Snippet>()
-            for (type in Snippet.Type.values()) {
-                val prefix = type.name.toLowerCase()
-                val textarea = elem.selectFirst("#$prefix-a") ?: continue
-
-                snippets.add(Snippet(type, textarea.`val`()))
+            for (link in links) {
+                val href = link.attr("href")
+                val type = getSnippetType(href)
+                val snippet = node.select("textarea$href-a").`val`() ?: continue
+                snippets.add(Snippet(type, snippet))
             }
             return snippets.toList()
+        }
+
+        /**
+         * Expects href to be in the form of:
+         *  - #maven
+         *  - #gradle
+         *  - #gradle-short
+         *  - #gradle-short-kotlin
+         *  - #sbt
+         *  - #ivy
+         *  - #leiningen
+         *  - #grape
+         *  - #builder
+         */
+        private fun getSnippetType(href: String): Snippet.Type {
+            val type = href.substring(1)
+            val uppercased = type.uppercase(Locale.getDefault())
+            val underscored = uppercased.replace('-', '_')
+            return Snippet.Type.valueOf(underscored)
         }
 
     }
