@@ -31,9 +31,7 @@ class ScrapingMvnRepositoryApiTest : BaseApiMockTest() {
     @Test
     fun `can parse repositories page`() {
         val server = serverWithResponses(
-            "/responses/repositories-page-p1.html",
-            "/responses/repositories-page-p2.html",
-            "/responses/repositories-page-p3.html"
+            "/responses/_repos.html",
         )
 
         val api = ScrapingMvnRepositoryApi(server.url("/"), OkHttpClient())

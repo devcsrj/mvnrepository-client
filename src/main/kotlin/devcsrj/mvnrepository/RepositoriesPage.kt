@@ -22,7 +22,7 @@ import java.net.URI
 
 internal class RepositoriesPage {
 
-    @Selector("#maincontent > div.im")
+    @Selector("div.im")
     lateinit var entries: List<Entry>
 
     internal class Entry {

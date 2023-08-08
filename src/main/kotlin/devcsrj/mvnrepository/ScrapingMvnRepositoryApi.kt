@@ -36,7 +36,7 @@ internal class ScrapingMvnRepositoryApi(
 
     private val logger: Logger = LoggerFactory.getLogger(MvnRepositoryApi::class.java)
     private val pageApi: MvnRepositoryPageApi
-    
+
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -49,23 +49,20 @@ internal class ScrapingMvnRepositoryApi(
 
     override fun getRepositories(): List<Repository> {
         var p = 1
-        val repos = mutableListOf<Repository>()
-        while (true) { // there are only 2(?) pages, we'll query them all at once now
-            val response = pageApi.getRepositoriesPage(p).execute()
-            p++ // next page
-            if (!response.isSuccessful) {
-                logger.warn("Request to $baseUrl failed while fetching repositories, got: ${response.code()}")
-                break
-            }
-            val page = response.body() ?: break;
-            if (page.entries.isEmpty())
-                break // stop when the page no longer shows an entry (we exceeded max page)
-
-            repos.addAll(page.entries
-                .filter { it.isPopulated() }
-                .map { Repository(it.id!!, it.name!!, it.uri!!) })
+        val response = pageApi.getRepositoriesPage(p).execute()
+        p++ // next page
+        if (!response.isSuccessful) {
+            logger.warn("Request to $baseUrl failed while fetching repositories, got: ${response.code()}")
+            return emptyList()
         }
-        return repos.toList()
+        val page = response.body();
+        return if (page !== null) {
+            page.entries
+                .filter { it.isPopulated() }
+                .map { Repository(it.id!!, it.name!!, it.uri!!) }
+        } else {
+            emptyList()
+        }
     }
 
     override fun getArtifactVersions(groupId: String, artifactId: String): List<String> {
