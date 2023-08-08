@@ -66,6 +66,7 @@ class ScrapingMvnRepositoryApiTest : BaseApiMockTest() {
             assertEquals("Apache 2.0", license)
             assertEquals(LocalDate.of(2023, Month.JULY, 11), date)
             assertEquals(URI.create("https://github.com/reactor/reactor-core"), homepage)
+            assertTrue(usedBy>= 171) // may increase over time
             assertFalse { snippets.isEmpty() }
             snippets.forEach {
                 assertFalse { it.value.isEmpty() }

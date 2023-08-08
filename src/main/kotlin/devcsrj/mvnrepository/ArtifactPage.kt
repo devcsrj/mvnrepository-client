@@ -18,6 +18,7 @@ package devcsrj.mvnrepository
 import org.jsoup.nodes.Element
 import pl.droidsonroids.jspoon.ElementConverter
 import pl.droidsonroids.jspoon.annotation.Selector
+import java.math.BigDecimal
 import java.net.URI
 import java.util.*
 
@@ -35,6 +36,9 @@ internal class ArtifactPage {
     @Selector("div.snippets",  converter = SnippetElementConverter::class)
     lateinit var snippets: List<Snippet>
 
+    @Selector("table.grid > tbody > tr:nth-child(10) > td > a > b",
+        converter = UsedByCountConverter::class)
+    var usedBy: Long = 0
 
     internal class SnippetElementConverter : ElementConverter<List<Snippet>> {
 
@@ -70,5 +74,18 @@ internal class ArtifactPage {
             return Snippet.Type.valueOf(underscored)
         }
 
+    }
+
+    internal class UsedByCountConverter :ElementConverter<Long> {
+
+        override fun convert(root: Element, selector: Selector): Long? {
+            // 1,532 artifacts
+            val suffix = " artifacts"
+            val txt = root.text()
+            if (!txt.endsWith(suffix)) {
+                return 0
+            }
+            return txt.substringBefore(suffix).replace(",", "").toLong()
+        }
     }
 }

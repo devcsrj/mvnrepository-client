@@ -22,11 +22,12 @@ import org.slf4j.LoggerFactory
 import pl.droidsonroids.retrofit2.JspoonConverterFactory
 import retrofit2.Retrofit
 import java.time.ZoneId
-import java.util.Optional
+import java.util.*
 
 internal class ScrapingMvnRepositoryApi(
     private val baseUrl: HttpUrl,
-    private val okHttpClient: OkHttpClient) : MvnRepositoryApi {
+    private val okHttpClient: OkHttpClient
+) : MvnRepositoryApi {
 
     companion object {
 
@@ -66,8 +67,10 @@ internal class ScrapingMvnRepositoryApi(
     override fun getArtifactVersions(groupId: String, artifactId: String): List<String> {
         val response = pageApi.getArtifactVersionsPage(groupId, artifactId).execute()
         if (!response.isSuccessful) {
-            logger.warn("Request to $baseUrl failed while fetching versions for artifact '" +
-                "$groupId:$artifactId', got: ${response.code()}")
+            logger.warn(
+                "Request to $baseUrl failed while fetching versions for artifact '" +
+                    "$groupId:$artifactId', got: ${response.code()}"
+            )
             return emptyList()
         }
 
@@ -78,13 +81,24 @@ internal class ScrapingMvnRepositoryApi(
     override fun getArtifact(groupId: String, artifactId: String, version: String): Optional<Artifact> {
         val response = pageApi.getArtifactPage(groupId, artifactId, version).execute()
         if (!response.isSuccessful) {
-            logger.warn("Request to $baseUrl failed while fetching artifact '" +
-                "$groupId:$artifactId:$version', got: ${response.code()}")
+            logger.warn(
+                "Request to $baseUrl failed while fetching artifact '" +
+                    "$groupId:$artifactId:$version', got: ${response.code()}"
+            )
             return Optional.empty()
         }
         val body = response.body() ?: return Optional.empty()
         val localDate = body.date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        val artifact = Artifact(groupId, artifactId, version, body.license, body.homepage, localDate, body.snippets)
+        val artifact = Artifact(
+            groupId = groupId,
+            id = artifactId,
+            version = version,
+            license = body.license,
+            homepage =  body.homepage,
+            date =  localDate,
+            usedBy = body.usedBy,
+            snippets = body.snippets
+        )
 
         return Optional.of(artifact)
     }
