@@ -48,9 +48,7 @@ internal class ScrapingMvnRepositoryApi(
     }
 
     override fun getRepositories(): List<Repository> {
-        var p = 1
-        val response = pageApi.getRepositoriesPage(p).execute()
-        p++ // next page
+        val response = pageApi.getRepositoriesPage().execute()
         if (!response.isSuccessful) {
             logger.warn("Request to $baseUrl failed while fetching repositories, got: ${response.code()}")
             return emptyList()
