@@ -37,8 +37,6 @@ Page<ArtifactEntry> page = api.search("reactor-core");
 
 > The above client defaults to [https://mvnrepository.com]().
 
-For a CLI tool, checkout [jarl](https://github.com/devcsrj/jarl).
-
 License
 ---
 ```
